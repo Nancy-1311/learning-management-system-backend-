@@ -40,21 +40,13 @@ export const createBooking = async (req, res) => {
         message: "Tutor not available at this time",
       });
     }
-
-    // 🔥 FIXED (MOST IMPORTANT)
-    // const booking = await Booking.create({
-    //   ...req.body,
-    //   userId: req.user.id,
-    //   tutorId: tutorId,
-    //   price: price,
-    // });
     const booking = await Booking.create({
   tutorId,
   userId: req.user.id,
   date,
   time,
-  price,          // 🔥 MUST
-  isPaid: false,  // 🔥 INIT
+  price,          
+  isPaid: true,  
 });
 
     res.json(booking);
@@ -73,10 +65,9 @@ export const getRecording = async (req, res) => {
       return res.status(404).json({ message: "Booking not found" });
     }
 
-    // 🔥 FIX: get tutor profile
+    
     const tutor = await Tutor.findById(booking.tutorId);
 
-    // 🔥 FIXED ACCESS CHECK
     if (
       booking.userId.toString() !== req.user.id &&
       (!tutor || tutor.userId.toString() !== req.user.id)
@@ -91,23 +82,10 @@ export const getRecording = async (req, res) => {
   }
 };
 
-// GET BOOKINGS (USER ONLY)
-// export const getBookings = async (req, res) => {
-//   try {
-//     const bookings = await Booking.find({
-//       userId: req.user.id,
-//       // tutorId: Tutor._id,
-//     });
-
-//     res.json(bookings);
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// };
 
 export const getBookings = async (req, res) => {
   try {
-    // 🧑‍🎓 STUDENT
+    //  STUDENT
     if (req.user.role === "student") {
       const bookings = await Booking.find({
         userId: req.user.id,
@@ -115,7 +93,7 @@ export const getBookings = async (req, res) => {
       return res.json(bookings);
     }
 
-    // 👨‍🏫 TUTOR
+    //  TUTOR
     if (req.user.role === "tutor") {
       const tutor = await Tutor.findOne({
         userId: req.user.id,
