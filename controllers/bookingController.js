@@ -46,7 +46,7 @@ export const createBooking = async (req, res) => {
   date,
   time,
   price,          
-  isPaid: true,  
+  isPaid: false,  
 });
 
     res.json(booking);
