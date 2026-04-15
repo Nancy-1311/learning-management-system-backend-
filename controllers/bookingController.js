@@ -120,35 +120,13 @@ export const getBookings = async (req, res) => {
   }
 };
 
-// ADD RECORDING (ONLY TUTOR)
-// export const addRecording = async (req, res) => {
-//   try {
-//     const booking = await Booking.findById(req.params.id);
-
-//     if (!booking) {
-//       return res.status(404).json({ message: "Booking not found" });
-//     }
-
-//     const tutor = await Tutor.findById(booking.tutorId);
-
-//     // 🔥 FIXED
-//     if (!tutor || tutor.userId.toString() !== req.user.id) {
-//       return res.status(403).json({ message: "Access denied" });
-//     }
-
-//     booking.recordingUrl = req.body.recordingUrl;
-//     await booking.save();
-
-//     res.json(booking);
-
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// };
-
 export const addRecording = async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id);
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
 
     const tutor = await Tutor.findById(booking.tutorId);
 
@@ -159,9 +137,10 @@ export const addRecording = async (req, res) => {
     booking.recordingUrl = req.body.recordingUrl;
     await booking.save();
 
-    res.json(booking);
+    res.json({ message: "Recording uploaded successfully", booking });
 
   } catch (err) {
+    console.error("Recording Error:", err);
     res.status(500).json({ message: err.message });
   }
 };
