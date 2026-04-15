@@ -4,26 +4,26 @@ const paymentSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true, // ✅ ADDED
+    required: true, 
   },
 
   tutorId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Tutor",
-    required: true, // ✅ ADDED
+    required: true, 
   },
 
   bookingId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Booking",
-    required: true, // 🔥 CRITICAL FIX
+    required: true, 
   },
 
   tutorName: String,
 
   amount: {
     type: Number,
-    required: true, // ✅ ADDED
+    required: true, 
   },
 
   date: {
